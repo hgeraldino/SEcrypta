@@ -4,8 +4,8 @@
   <artifactId>secryptas</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>SEcryptas</name>
+  <name>SEcrypta</name>
   <modules>
-  	<module>secryptas-model</module>
+  	<module>secrypta-model</module>
   </modules>
 </project>

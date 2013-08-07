@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>net.hg</groupId>
-    <artifactId>secryptas</artifactId>
+    <artifactId>secrypta</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>secryptas-model</artifactId>
+  <artifactId>secrypta-model</artifactId>
   <name>SEcryptas-model</name>
 </project>
