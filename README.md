@@ -21,6 +21,3 @@ Uses a combination of symmetrical and asymmetrical encryption (hybrid) to encryp
   * Asymmetric keys are generated using RSA 2048 bits
   * User private keys are encrypted using PBE 
 
-Dependencies:
----------------------
-
