@@ -9,6 +9,9 @@
 	<modules>
 		<module>secrypta-persist</module>
 		<module>secrypta-encryption</module>
+		<module>secrypta-model</module>
+		<module>secrypta-api</module>
+		<module>secrypta-service</module>
 	</modules>
 	<dependencies>
 		<dependency>
