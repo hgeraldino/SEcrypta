@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.hg</groupId>
 	<artifactId>secrypta</artifactId>
@@ -42,9 +41,11 @@
 		<secrypta.version>0.0.1-SNAPSHOT</secrypta.version>
 		<achilles.version>3.0.1</achilles.version>
 		<guava.version>16.0.1</guava.version>
+		<junit.version>4.11</junit.version>
 	</properties>
 
 	<dependencies>
+		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -71,22 +72,60 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- Commons -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+
 		<!-- Guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>16.0.1</version>
 		</dependency>
+
+		<!-- Logback -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<scm>
 		<url>https://github.com/hgeraldino/SEcrypta</url>
 		<connection>scm:git:git@github.com:hgeraldino/SEcrypta</connection>
-		<developerConnection>scm:git:git@github.com:hgeraldino/SEcrypta</developerConnection>
+		<developerConnection>
+			scm:git:git@github.com:hgeraldino/SEcrypta
+		</developerConnection>
 	</scm>
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/hgeraldino/SEcrypta/issues</url>
 	</issueManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
