@@ -6,6 +6,27 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>SEcrypta</name>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>hgeraldino</id>
+			<name>Hector Geraldino</name>
+			<email>hgeraldino@gmail.com</email>
+			<url>http://github.com/hgeraldino</url>
+			<roles>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 	<modules>
 		<module>secrypta-persist</module>
 		<module>secrypta-encryption</module>
@@ -13,6 +34,16 @@
 		<module>secrypta-api</module>
 		<module>secrypta-service</module>
 	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>3.2.3.RELEASE</spring.version>
+		<spring.security.version>3.1.4.RELEASE</spring.security.version>
+		<secrypta.version>0.0.1-SNAPSHOT</secrypta.version>
+		<achilles.version>3.0.1</achilles.version>
+		<guava.version>16.0.1</guava.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -39,11 +70,23 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
+		<!-- Guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>16.0.1</version>
+		</dependency>
 	</dependencies>
 
-	<properties>
-		<spring.version>3.2.3.RELEASE</spring.version>
-		<spring.security.version>3.1.4.RELEASE</spring.security.version>
-		<secrypta.version>0.0.1-SNAPSHOT</secrypta.version>
-	</properties>
+	<scm>
+		<url>https://github.com/hgeraldino/SEcrypta</url>
+		<connection>scm:git:git@github.com:hgeraldino/SEcrypta</connection>
+		<developerConnection>scm:git:git@github.com:hgeraldino/SEcrypta</developerConnection>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/hgeraldino/SEcrypta/issues</url>
+	</issueManagement>
+
 </project>

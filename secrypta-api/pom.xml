@@ -5,6 +5,7 @@
     <artifactId>secrypta</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>secrypta-api</artifactId>
-  <name>secrypta-api</name>
+  <artifactId>secrypta-web</artifactId>
+  <name>SEcrypta-web</name>
+  <description>RESTful endpoints</description>
 </project>
