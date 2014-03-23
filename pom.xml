@@ -7,11 +7,8 @@
 	<packaging>pom</packaging>
 	<name>SEcrypta</name>
 	<modules>
-		<module>secrypta-model</module>
 		<module>secrypta-persist</module>
-		<module>secrypta-engine</module>
 		<module>secrypta-encryption</module>
-		<module>secrypta-web</module>
 	</modules>
 	<dependencies>
 		<dependency>
