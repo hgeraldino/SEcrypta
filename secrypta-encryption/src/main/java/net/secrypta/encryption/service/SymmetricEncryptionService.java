@@ -1,4 +1,4 @@
-package net.secrypta.encryption;
+package net.secrypta.encryption.service;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -11,7 +11,7 @@ import javax.crypto.SecretKey;
  * @author hgeraldino
  * 
  */
-public interface EncryptionEngine {
+public interface SymmetricEncryptionService {
 
     /**
      * 
