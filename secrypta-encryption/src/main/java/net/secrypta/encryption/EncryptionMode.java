@@ -6,5 +6,16 @@ package net.secrypta.encryption;
  * 
  */
 public enum EncryptionMode {
-    PBE, SYMMETRIC, ASSYMETRIC
+    PBE("PBE"), SYMMETRIC("AES"), ASYMMETRIC("RSA");
+
+    private String algorithm;
+
+    private EncryptionMode(String algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
 }
