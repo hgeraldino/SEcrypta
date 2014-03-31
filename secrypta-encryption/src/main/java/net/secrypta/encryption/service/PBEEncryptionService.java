@@ -6,7 +6,7 @@ package net.secrypta.encryption.service;
  * @author hgeraldino
  * 
  */
-public interface PBEEncryptionService {
+public interface PBEEncryptionService extends EncryptionService {
 
     /**
      * 

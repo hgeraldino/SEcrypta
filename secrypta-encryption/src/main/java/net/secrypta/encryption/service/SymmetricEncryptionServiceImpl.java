@@ -1,59 +1,39 @@
 package net.secrypta.encryption.service;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.Map.Entry;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
  * 
  * @author hgeraldino
  * 
  */
-public class SymmetricEncryptionServiceImpl implements SymmetricEncryptionService {
+@Service
+public class SymmetricEncryptionServiceImpl extends AbstractEncryptionServiceImpl implements SymmetricEncryptionService {
 
     static final Logger LOG = LoggerFactory.getLogger(SymmetricEncryptionServiceImpl.class);
+
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     @Autowired
     private CipherFactory cipherFactory;
 
-    @Value("")
+//    @Value("")
     private String xform;
 
     @Override
-    public byte[] getSHAMessageDigest(String plainText) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String passwordBasedEncryption(String plainText, String encryptionKey) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String passwordBasedDecryption(String encryptedText, String encryptionKey) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String asymmetricEncryption(String plainText, PublicKey encryptionKey) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String asymmetricDecryption(String encryptedText, PrivateKey encryptionKey) {
-        // TODO Auto-generated method stub
-        return null;
+    public SecretKey newSymmetricKey() {
+        byte[] key = new byte[16];
+        secureRandom.nextBytes(key);
+        return new SecretKeySpec(key, "AES");
     }
 
     @Override
@@ -67,5 +47,4 @@ public class SymmetricEncryptionServiceImpl implements SymmetricEncryptionServic
         // TODO Auto-generated method stub
         return null;
     }
-
 }

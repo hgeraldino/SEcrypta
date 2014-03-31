@@ -1,7 +1,5 @@
 package net.secrypta.encryption.service;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
@@ -11,46 +9,7 @@ import javax.crypto.SecretKey;
  * @author hgeraldino
  * 
  */
-public interface SymmetricEncryptionService {
-
-    /**
-     * 
-     * @param plainText
-     * @return
-     */
-    byte[] getSHAMessageDigest(String plainText);
-
-    /**
-     * 
-     * @param plainText
-     * @param encryptionKey
-     * @return
-     */
-    String passwordBasedEncryption(String plainText, String encryptionKey);
-
-    /**
-     * 
-     * @param encryptedText
-     * @param encryptionKey
-     * @return
-     */
-    String passwordBasedDecryption(String encryptedText, String encryptionKey);
-
-    /**
-     * 
-     * @param plainText
-     * @param encryptionKey
-     * @return
-     */
-    String asymmetricEncryption(String plainText, PublicKey encryptionKey);
-
-    /**
-     * 
-     * @param encryptedText
-     * @param encryptionKey
-     * @return
-     */
-    String asymmetricDecryption(String encryptedText, PrivateKey encryptionKey);
+public interface SymmetricEncryptionService extends EncryptionService {
 
     /**
      * 
@@ -67,5 +26,11 @@ public interface SymmetricEncryptionService {
      * @return
      */
     String symmetricDecryption(String encryptedText, SecretKey encryptionKey);
+
+    /**
+     * 
+     * @return
+     */
+    SecretKey newSymmetricKey();
 
 }
