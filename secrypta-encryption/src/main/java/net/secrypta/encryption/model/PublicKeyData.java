@@ -1,6 +1,5 @@
 package net.secrypta.encryption.model;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
@@ -8,7 +7,7 @@ import java.math.BigInteger;
  * @author hgeraldino
  * 
  */
-public class PublicKeyData implements Serializable {
+public class PublicKeyData implements AsymmetricKeyData {
 
     private static final long serialVersionUID = 1L;
 
