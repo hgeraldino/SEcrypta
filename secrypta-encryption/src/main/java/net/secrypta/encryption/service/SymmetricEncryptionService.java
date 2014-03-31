@@ -1,8 +1,11 @@
 package net.secrypta.encryption.service;
 
-import java.util.Map;
+import java.io.InputStream;
 
 import javax.crypto.SecretKey;
+
+import net.secrypta.encryption.model.SymmetricEncryptionResult;
+import net.secrypta.encryption.model.SymmetricKeyData;
 
 /**
  * 
@@ -17,7 +20,15 @@ public interface SymmetricEncryptionService extends EncryptionService {
      * @param encryptionKey
      * @return
      */
-    Map.Entry<String, String> symmetricEncryption(String plainText, SecretKey encryptionKey);
+    SymmetricEncryptionResult encrypt(InputStream stream, SecretKey encryptionKey);
+
+    /**
+     * 
+     * @param contents
+     * @param encryptionKey
+     * @return
+     */
+    SymmetricEncryptionResult encrypt(byte[] contents, SecretKey encryptionKey);
 
     /**
      * 
@@ -25,7 +36,7 @@ public interface SymmetricEncryptionService extends EncryptionService {
      * @param encryptionKey
      * @return
      */
-    String symmetricDecryption(String encryptedText, SecretKey encryptionKey);
+    String decrypt(String encryptedText, SymmetricKeyData keyData);
 
     /**
      * 

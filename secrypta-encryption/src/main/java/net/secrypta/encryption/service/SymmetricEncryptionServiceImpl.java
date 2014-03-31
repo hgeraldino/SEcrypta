@@ -1,15 +1,31 @@
 package net.secrypta.encryption.service;
 
-import java.security.SecureRandom;
-import java.util.Map.Entry;
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
 
+import java.io.InputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import net.secrypta.encryption.EncryptionMode;
+import net.secrypta.encryption.model.SymmetricEncryptionResult;
+import net.secrypta.encryption.model.SymmetricKeyData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.base.Throwables;
 
 /**
  * 
@@ -26,8 +42,8 @@ public class SymmetricEncryptionServiceImpl extends AbstractEncryptionServiceImp
     @Autowired
     private CipherFactory cipherFactory;
 
-//    @Value("")
-    private String xform;
+    // @Value("")
+    private String xform = "AES/CBC/PKCS5Padding";
 
     @Override
     public SecretKey newSymmetricKey() {
@@ -37,14 +53,48 @@ public class SymmetricEncryptionServiceImpl extends AbstractEncryptionServiceImp
     }
 
     @Override
-    public Entry<String, String> symmetricEncryption(String plainText, SecretKey encryptionKey) {
-        // TODO Auto-generated method stub
+    public SymmetricEncryptionResult encrypt(InputStream stream, SecretKey encryptionKey) {
+        Throwables.propagate(new UnsupportedOperationException("not implemented"));
         return null;
     }
 
     @Override
-    public String symmetricDecryption(String encryptedText, SecretKey encryptionKey) {
-        // TODO Auto-generated method stub
-        return null;
+    public SymmetricEncryptionResult encrypt(byte[] contents, SecretKey encryptionKey) {
+        SymmetricEncryptionResult result = null;
+
+        Cipher cipher;
+        try {
+            cipher = cipherFactory.getCipher(encryptionKey, Cipher.ENCRYPT_MODE, xform);
+            byte[] encryptedValue = cipher.doFinal(contents);
+
+            result = new SymmetricEncryptionResult(encryptedValue, encryptionKey.getEncoded(), cipher.getIV());
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            LOG.error("Error: ", e);
+            Throwables.propagate(e);
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public String decrypt(String encryptedText, SymmetricKeyData keyData) {
+
+        String result = null;
+
+        Cipher cipher;
+        try {
+            Key key = new SecretKeySpec(decodeBase64(keyData.getEncodedKey()), EncryptionMode.SYMMETRIC.getAlgorithm());
+            byte[] initVector = decodeBase64(keyData.getInitVector());
+            
+            cipher = cipherFactory.getCipher(key, initVector, Cipher.DECRYPT_MODE, xform);
+            result = new String(cipher.doFinal(decodeBase64(encryptedText)));
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException
+                | BadPaddingException e) {
+            LOG.error("Error: ", e);
+            Throwables.propagate(e);
+        }
+
+        return result;
     }
 }

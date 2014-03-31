@@ -4,6 +4,7 @@ import javax.crypto.SecretKey;
 
 import net.secrypta.encryption.EncryptionBuilder;
 import net.secrypta.encryption.SymmetricBuilder;
+import net.secrypta.encryption.model.SymmetricEncryptionResult;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,10 +38,22 @@ public class SymmetricEncryptionTests {
 
     @Test
     public void testKeyCreation() {
-        SecretKey key = builder.newKey();
+        SecretKey key = builder.getNewKey();
 
         Assert.assertNotNull(key);
         Assert.assertEquals(key.getAlgorithm(), "AES");
+    }
+    
+    @Test
+    public void testStringEncryption(){
+        String textToEncrypt = "Encrypt this text";
+        SecretKey key = builder.getNewKey();
+        
+        SymmetricEncryptionResult result = builder.usingKey(key).encrypt(textToEncrypt);
+        Assert.assertNotNull(result);
+        Assert.assertNotNull(result.getKeyData());
+        
+        
     }
 
 }
