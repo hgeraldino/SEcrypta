@@ -13,10 +13,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ComponentScan(basePackages = { "net.secrypta.encryption" })
-@SpringApplicationConfiguration(classes = AssymmetricEncryptionTests.class)
-public class AssymmetricEncryptionTests {
+@SpringApplicationConfiguration(classes = AsymmetricEncryptionTests.class)
+public class AsymmetricEncryptionTests {
 
-    static final Logger LOG = LoggerFactory.getLogger(AssymmetricEncryptionTests.class);
+    static final Logger LOG = LoggerFactory.getLogger(AsymmetricEncryptionTests.class);
 
     @Autowired
     private AsymmetricEncryptionService encryptionService;
