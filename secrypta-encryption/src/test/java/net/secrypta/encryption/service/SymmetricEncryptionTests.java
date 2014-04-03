@@ -2,8 +2,8 @@ package net.secrypta.encryption.service;
 
 import javax.crypto.SecretKey;
 
-import net.secrypta.encryption.EncryptionBuilder;
-import net.secrypta.encryption.SymmetricBuilder;
+import net.secrypta.encryption.builder.EncryptionBuilder;
+import net.secrypta.encryption.builder.SymmetricBuilder;
 import net.secrypta.encryption.model.SymmetricEncryptionResult;
 
 import org.junit.Assert;
@@ -43,17 +43,19 @@ public class SymmetricEncryptionTests {
         Assert.assertNotNull(key);
         Assert.assertEquals(key.getAlgorithm(), "AES");
     }
-    
+
     @Test
-    public void testStringEncryption(){
+    public void testStringEncryption() {
         String textToEncrypt = "Encrypt this text";
         SecretKey key = builder.getNewKey();
-        
+
         SymmetricEncryptionResult result = builder.usingKey(key).encrypt(textToEncrypt);
         Assert.assertNotNull(result);
         Assert.assertNotNull(result.getKeyData());
-        
-        
+
+        String decryptedText = builder.usingKeyData(result.getKeyData()).decrypt(result.getEncryptedValue());
+
+        Assert.assertEquals(textToEncrypt, decryptedText);
     }
 
 }

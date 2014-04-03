@@ -1,11 +1,11 @@
 package net.secrypta.encryption.service;
 
 import java.io.InputStream;
+import java.security.Key;
 
 import javax.crypto.SecretKey;
 
 import net.secrypta.encryption.model.SymmetricEncryptionResult;
-import net.secrypta.encryption.model.SymmetricKeyData;
 
 /**
  * 
@@ -33,10 +33,11 @@ public interface SymmetricEncryptionService extends EncryptionService {
     /**
      * 
      * @param encryptedText
-     * @param encryptionKey
+     * @param keySpec
+     * @param initVector
      * @return
      */
-    String decrypt(String encryptedText, SymmetricKeyData keyData);
+    String decrypt(String encryptedText, Key keySpec, byte[] initVector);
 
     /**
      * 

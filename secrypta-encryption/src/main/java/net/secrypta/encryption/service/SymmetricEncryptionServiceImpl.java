@@ -16,9 +16,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import net.secrypta.encryption.EncryptionMode;
 import net.secrypta.encryption.model.SymmetricEncryptionResult;
-import net.secrypta.encryption.model.SymmetricKeyData;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,16 +76,12 @@ public class SymmetricEncryptionServiceImpl extends AbstractEncryptionServiceImp
     }
 
     @Override
-    public String decrypt(String encryptedText, SymmetricKeyData keyData) {
-
+    public String decrypt(String encryptedText, Key keySpec, byte[] initVector) {
         String result = null;
 
         Cipher cipher;
         try {
-            Key key = new SecretKeySpec(decodeBase64(keyData.getEncodedKey()), EncryptionMode.SYMMETRIC.getAlgorithm());
-            byte[] initVector = decodeBase64(keyData.getInitVector());
-            
-            cipher = cipherFactory.getCipher(key, initVector, Cipher.DECRYPT_MODE, xform);
+            cipher = cipherFactory.getCipher(keySpec, initVector, Cipher.DECRYPT_MODE, xform);
             result = new String(cipher.doFinal(decodeBase64(encryptedText)));
         } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | IllegalBlockSizeException
                 | BadPaddingException e) {
