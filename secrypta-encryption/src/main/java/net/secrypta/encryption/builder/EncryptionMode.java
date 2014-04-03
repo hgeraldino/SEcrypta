@@ -1,4 +1,4 @@
-package net.secrypta.encryption;
+package net.secrypta.encryption.builder;
 
 /**
  * 

@@ -1,4 +1,6 @@
-package net.secrypta.encryption;
+package net.secrypta.encryption.builder;
+
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -6,8 +8,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.security.Key;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import net.secrypta.encryption.model.SymmetricEncryptionResult;
 import net.secrypta.encryption.model.SymmetricKeyData;
@@ -29,22 +33,24 @@ import com.google.common.base.Throwables;
 @Service
 public class SymmetricBuilder {
 
-    static final Logger LOG = LoggerFactory.getLogger(SymmetricBuilder.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SymmetricBuilder.class);
 
     @Autowired
-    private SymmetricEncryptionService symmetricEncryptionService;
+    private SymmetricEncryptionService encryptionService;
 
     public void setSymmetricEncryptionService(SymmetricEncryptionService symmetricEncryptionService) {
-        this.symmetricEncryptionService = symmetricEncryptionService;
+        this.encryptionService = symmetricEncryptionService;
     }
 
     private SecretKey key;
+
+    private SymmetricKeyData keyData;
 
     public SymmetricBuilder() {
     }
 
     public SymmetricBuilder(SymmetricEncryptionService symmetricEncryptionService) {
-        this.symmetricEncryptionService = symmetricEncryptionService;
+        this.encryptionService = symmetricEncryptionService;
     }
 
     public SymmetricBuilder usingKey(SecretKey key) {
@@ -52,19 +58,20 @@ public class SymmetricBuilder {
         return this;
     }
 
-    public SymmetricBuilder usingKeyData(SymmetricKeyData keydata) {
+    public SymmetricBuilder usingKeyData(SymmetricKeyData keyData) {
+        this.keyData = keyData;
         return this;
     }
 
     public SecretKey getNewKey() {
-        return symmetricEncryptionService.newSymmetricKey();
+        return encryptionService.newSymmetricKey();
     }
 
-    public SymmetricEncryptionResult encrypt(String input) {
-        validate();
+    public SymmetricEncryptionResult encrypt(String plainText) {
+        validateEncryptOp();
 
         try {
-            return encrypt(input.getBytes(CharEncoding.UTF_16));
+            return encrypt(plainText.getBytes(CharEncoding.UTF_8));
         } catch (UnsupportedEncodingException e) {
             LOG.error("Error: ", e);
             Throwables.propagate(e);
@@ -73,7 +80,7 @@ public class SymmetricBuilder {
     }
 
     public SymmetricEncryptionResult encrypt(File inputFile) {
-        validate();
+        validateEncryptOp();
 
         try {
             return encrypt(new FileInputStream(inputFile));
@@ -86,18 +93,30 @@ public class SymmetricBuilder {
     }
 
     public SymmetricEncryptionResult encrypt(byte[] contents) {
-        validate();
-        return symmetricEncryptionService.encrypt(contents, this.key);
+        validateEncryptOp();
+        return encryptionService.encrypt(contents, this.key);
     }
 
     public SymmetricEncryptionResult encrypt(InputStream stream) {
-        validate();
-        return symmetricEncryptionService.encrypt(new BufferedInputStream(stream), this.key);
+        validateEncryptOp();
+        return encryptionService.encrypt(new BufferedInputStream(stream), this.key);
     }
 
-    private void validate() {
+    public String decrypt(String encryptedText) {
+        validateDecryptOp();
+        Key key = new SecretKeySpec(decodeBase64(keyData.getEncodedKey()), EncryptionMode.SYMMETRIC.getAlgorithm());
+        byte[] initVector = decodeBase64(keyData.getInitVector());
+
+        return encryptionService.decrypt(encryptedText, key, initVector);
+    }
+
+    private void validateEncryptOp() {
         if (this.key == null) {
             this.key = getNewKey();
         }
     }
+
+    private void validateDecryptOp() {
+    }
+
 }
