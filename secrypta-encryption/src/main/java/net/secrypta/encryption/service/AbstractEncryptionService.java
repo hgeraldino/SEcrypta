@@ -11,7 +11,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * @author hgeraldino
  * 
  */
-public abstract class AbstractEncryptionServiceImpl implements EncryptionService {
+public abstract class AbstractEncryptionService implements EncryptionService {
 
     @PostConstruct
     public void init() {
