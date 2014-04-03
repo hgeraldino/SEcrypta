@@ -1,7 +1,6 @@
 package net.secrypta.encryption.model;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 
 /**
  * 
@@ -10,8 +9,8 @@ import java.math.BigInteger;
  */
 public interface AsymmetricKeyData extends Serializable {
 
-    public BigInteger getModulus();
+    public String getModulus();
 
-    public BigInteger getExponent();
+    public String getExponent();
 
 }

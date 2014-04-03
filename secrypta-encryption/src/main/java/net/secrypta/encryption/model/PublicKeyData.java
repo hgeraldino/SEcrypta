@@ -1,6 +1,8 @@
 package net.secrypta.encryption.model;
 
-import java.math.BigInteger;
+import static org.apache.commons.codec.binary.Base64.encodeBase64String;
+
+import java.security.spec.RSAPublicKeySpec;
 
 /**
  * 
@@ -11,24 +13,31 @@ public class PublicKeyData implements AsymmetricKeyData {
 
     private static final long serialVersionUID = 1L;
 
-    private BigInteger modulus;
+    private String modulus;
 
-    private BigInteger exponent;
+    private String exponent;
 
-    public BigInteger getModulus() {
+    public String getModulus() {
         return modulus;
     }
 
-    public void setModulus(BigInteger modulus) {
+    public void setModulus(String modulus) {
         this.modulus = modulus;
     }
 
-    public BigInteger getExponent() {
+    public String getExponent() {
         return exponent;
     }
 
-    public void setExponent(BigInteger exponent) {
+    public void setExponent(String exponent) {
         this.exponent = exponent;
     }
 
+    public PublicKeyData() {
+    }
+
+    public PublicKeyData(RSAPublicKeySpec publicKeySpec) {
+        this.modulus =  encodeBase64String(publicKeySpec.getModulus().toByteArray());
+        this.exponent = encodeBase64String(publicKeySpec.getPublicExponent().toByteArray());
+    }
 }

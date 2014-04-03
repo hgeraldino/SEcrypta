@@ -31,4 +31,11 @@ public class AsymmetricKeyPairData implements Serializable {
         this.publicKeyData = publicKeyData;
     }
 
+    public AsymmetricKeyPairData() {
+    }
+
+    public AsymmetricKeyPairData(PublicKeyData publicKeyData, PrivateKeyData privateKeyData) {
+        this.publicKeyData = publicKeyData;
+        this.privateKeyData = privateKeyData;
+    }
 }

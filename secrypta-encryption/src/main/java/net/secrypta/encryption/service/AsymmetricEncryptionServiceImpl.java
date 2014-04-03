@@ -1,14 +1,22 @@
 package net.secrypta.encryption.service;
 
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64String;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 
 import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
@@ -17,7 +25,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-import net.secrypta.encryption.EncryptionMode;
+import net.secrypta.encryption.builder.EncryptionMode;
+import net.secrypta.encryption.model.AsymmetricKeyData;
 import net.secrypta.encryption.model.AsymmetricKeyPairData;
 import net.secrypta.encryption.model.PrivateKeyData;
 import net.secrypta.encryption.model.PublicKeyData;
@@ -40,6 +49,8 @@ public class AsymmetricEncryptionServiceImpl extends AbstractEncryptionServiceIm
     static final Logger LOG = LoggerFactory.getLogger(AsymmetricEncryptionServiceImpl.class);
 
     private KeyPairGenerator keyPairGenerator;
+
+    private KeyFactory keyFactory;
 
     @Autowired
     private CipherFactory cipherFactory;
@@ -68,6 +79,8 @@ public class AsymmetricEncryptionServiceImpl extends AbstractEncryptionServiceIm
             super.init();
             keyPairGenerator = KeyPairGenerator.getInstance(EncryptionMode.ASYMMETRIC.getAlgorithm(), "BC");
             keyPairGenerator.initialize(keySize);
+
+            keyFactory = KeyFactory.getInstance(EncryptionMode.ASYMMETRIC.getAlgorithm(), "BC");
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             LOG.error("Error initializing the KPG: ", e);
             Throwables.propagate(e);
@@ -92,12 +105,6 @@ public class AsymmetricEncryptionServiceImpl extends AbstractEncryptionServiceIm
     }
 
     @Override
-    public String encrypt(SecretKey key, PublicKeyData publicKeyData) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public SecretKey decrypt(String encryptedText, PrivateKey encryptionKey) {
         // TODO Auto-generated method stub
         return null;
@@ -110,36 +117,69 @@ public class AsymmetricEncryptionServiceImpl extends AbstractEncryptionServiceIm
     }
 
     @Override
-    public AsymmetricKeyPairData serialize(PublicKey publicKey, PrivateKey privateKey, String passPhrase) {
-        // TODO Auto-generated method stub
-        return null;
+    public AsymmetricKeyPairData generateKeyPairData() {
+        AsymmetricKeyPairData result = null;
+        RSAPublicKeySpec publicKey;
+        RSAPrivateKeySpec privateKey;
+
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        try {
+
+            publicKey = keyFactory.getKeySpec(keyPair.getPublic(), RSAPublicKeySpec.class);
+            privateKey = keyFactory.getKeySpec(keyPair.getPrivate(), RSAPrivateKeySpec.class);
+
+            PublicKeyData publicKeyData = new PublicKeyData(publicKey);
+            PrivateKeyData privateKeyData = new PrivateKeyData(privateKey);
+
+            result = new AsymmetricKeyPairData(publicKeyData, privateKeyData);
+
+        } catch (InvalidKeySpecException e) {
+            LOG.error("Error: ", e);
+            Throwables.propagate(e);
+        }
+
+        return result;
     }
 
     @Override
-    public KeyPair generateKeyPair() {
-        // TODO Auto-generated method stub
-        return null;
+    public String encrypt(byte[] contents, PublicKey publicKey) {
+        String result = null;
+        Cipher cipher;
+
+        try {
+            cipher = cipherFactory.getCipher(publicKey, Cipher.ENCRYPT_MODE, xform);
+            byte[] encryptedValue = cipher.doFinal(contents);
+            result = encodeBase64String(encryptedValue);
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
+            LOG.error("Error: ", e);
+            Throwables.propagate(e);
+        }
+
+        return result;
     }
 
-    // @Override
-    // public OutputStream encrypt(byte[] contents, PublicKey encryptionKey) {
-    // Cipher cipher;
-    // try (OutputStream stream = new ByteArrayOutputStream()) {
-    //
-    // cipher = cipherFactory.getCipher(encryptionKey, Cipher.ENCRYPT_MODE,
-    // xform);
-    // byte[] encryptedValue = cipher.doFinal(contents);
-    //
-    // stream.write(encryptedValue);
-    // return stream;
-    // } catch (IOException | InvalidKeyException | NoSuchAlgorithmException |
-    // NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException
-    // e) {
-    // LOG.error("Error: ", e);
-    // Throwables.propagate(e);
-    //
-    // }
-    // return null;
-    // }
+    @Override
+    public Key loadKeySpec(AsymmetricKeyData keyData) {
+        Key key = null;
+        KeySpec keySpec;
+
+        BigInteger modulus = new BigInteger(decodeBase64(keyData.getModulus()));
+        BigInteger exponent = new BigInteger(decodeBase64(keyData.getExponent()));
+
+        try {
+            if (keyData instanceof PublicKeyData) {
+                keySpec = new RSAPublicKeySpec(modulus, exponent);
+                key = keyFactory.generatePublic(keySpec);
+            } else if (keyData instanceof PrivateKeyData) {
+                keySpec = new RSAPrivateKeySpec(modulus, exponent);
+                key = keyFactory.generatePrivate(keySpec);
+            }
+        } catch (InvalidKeySpecException e) {
+            LOG.error("Error: ", e);
+            Throwables.propagate(e);
+        }
+
+        return key;
+    }
 
 }

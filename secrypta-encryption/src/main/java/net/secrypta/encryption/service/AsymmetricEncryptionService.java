@@ -1,14 +1,14 @@
 package net.secrypta.encryption.service;
 
-import java.security.KeyPair;
+import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
+import net.secrypta.encryption.model.AsymmetricKeyData;
 import net.secrypta.encryption.model.AsymmetricKeyPairData;
 import net.secrypta.encryption.model.PrivateKeyData;
-import net.secrypta.encryption.model.PublicKeyData;
 
 /**
  * 
@@ -27,11 +27,11 @@ public interface AsymmetricEncryptionService extends EncryptionService {
 
     /**
      * 
-     * @param plainText
-     * @param encryptionKey
+     * @param contents
+     * @param publicKey
      * @return
      */
-    String encrypt(SecretKey key, PublicKeyData publicKeyData);
+    String encrypt(byte[] contents, PublicKey publicKey);
 
     /**
      * 
@@ -51,17 +51,15 @@ public interface AsymmetricEncryptionService extends EncryptionService {
 
     /**
      * 
-     * @param publicKey
-     * @param privateKey
-     * @param passPhrase
      * @return
      */
-    AsymmetricKeyPairData serialize(PublicKey publicKey, PrivateKey privateKey, String passPhrase);
+    AsymmetricKeyPairData generateKeyPairData();
 
     /**
      * 
+     * @param keyData
      * @return
      */
-    KeyPair generateKeyPair();
+    Key loadKeySpec(AsymmetricKeyData keyData);
 
 }
