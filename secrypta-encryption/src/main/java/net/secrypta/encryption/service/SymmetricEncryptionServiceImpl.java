@@ -31,7 +31,7 @@ import com.google.common.base.Throwables;
  * 
  */
 @Service
-public class SymmetricEncryptionServiceImpl extends AbstractEncryptionServiceImpl implements SymmetricEncryptionService {
+public class SymmetricEncryptionServiceImpl extends AbstractEncryptionService implements SymmetricEncryptionService {
 
     static final Logger LOG = LoggerFactory.getLogger(SymmetricEncryptionServiceImpl.class);
 

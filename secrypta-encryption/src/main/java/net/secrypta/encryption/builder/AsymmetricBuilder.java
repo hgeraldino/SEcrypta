@@ -3,7 +3,6 @@ package net.secrypta.encryption.builder;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
-import net.secrypta.encryption.model.AsymmetricKeyData;
 import net.secrypta.encryption.model.AsymmetricKeyPairData;
 import net.secrypta.encryption.model.SymmetricKeyData;
 import net.secrypta.encryption.service.AsymmetricEncryptionService;

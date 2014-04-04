@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * @author hgeraldino
  * 
  */
-public class PBEEncryptionServiceImpl extends AbstractEncryptionServiceImpl implements PBEEncryptionService {
+public class PBEEncryptionServiceImpl extends AbstractEncryptionService implements PBEEncryptionService {
 
     static final Logger LOG = LoggerFactory.getLogger(PBEEncryptionServiceImpl.class);
 

@@ -44,7 +44,7 @@ import com.google.common.base.Throwables;
  * 
  */
 @Service
-public class AsymmetricEncryptionServiceImpl extends AbstractEncryptionServiceImpl implements AsymmetricEncryptionService {
+public class AsymmetricEncryptionServiceImpl extends AbstractEncryptionService implements AsymmetricEncryptionService {
 
     static final Logger LOG = LoggerFactory.getLogger(AsymmetricEncryptionServiceImpl.class);
 
