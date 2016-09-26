@@ -17,7 +17,7 @@ Cryptography:
 -------------------
 Uses a combination of symmetrical and asymmetrical encryption (hybrid) to encrypt sensitive data.
 
-  * Symmetric keys are generated using AES 256bits
-  * Asymmetric keys are generated using RSA 2048 bits
-  * User private keys are encrypted using PBE 
+  * Symmetric keys (AES)
+  * Asymmetric keys (RSA and ECC keys)
+  * User private keys are encrypted using different PBKDF functions
 
